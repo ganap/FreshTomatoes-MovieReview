@@ -32,9 +32,12 @@ You're encouraged to setup a `virtualenv` to work in prior to configuring the de
 
 
 
-The admin user login:
+The super user / admin user login is:
 
 superuser / test123
+
+URL
+http://127.0.0.1/movies
 
 Known issues:
 
