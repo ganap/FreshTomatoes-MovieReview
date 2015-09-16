@@ -32,6 +32,10 @@ You're encouraged to setup a `virtualenv` to work in prior to configuring the de
 
 
 
+The admin user login:
+
+superuser / test123
+
 Known issues:
 
 1. The edit functionality does doesnt work - there's seems to be an issue passing scope variables between different controllers in angular material. 
