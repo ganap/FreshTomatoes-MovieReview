@@ -1,7 +1,5 @@
 # FreshTomatoes - A movie review App [using django rest framework and angular js / angular material
 
-This sample project is the companion of a [blog post](http://kevinastone.github.io/getting-started-with-django-rest-framework-and-angularjs.html) on how to get started with Django Rest Framework and AngularJS.
-
 ## Dependencies
 
 To setup and run the sample code, you're going to need `npm` from NodeJS available to install the frontend code.
