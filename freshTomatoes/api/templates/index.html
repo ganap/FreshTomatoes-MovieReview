@@ -1,0 +1,15 @@
+{% load staticfiles %}
+
+<html>
+<body ng-app="freshTomatoes.app.movieReview">
+<ol>
+    <li><a href="{% url "freshTomatoes" template_name='static' %}">Hard Coded freshTomatoes</a></li>
+    <li><a href="{% url "freshTomatoes" template_name='basic' %}">Basic Ajax freshTomatoes</a></li>
+    <li><a href="{% url "freshTomatoes" template_name='resource' %}">Angular Resource freshTomatoes</a></li>
+    <li><a href="{% url "freshTomatoes" template_name='photos' %}">Photos freshTomatoes</a></li>
+    <li><a href="{% url "freshTomatoes" template_name='editor' %}">Editor freshTomatoes</a></li>
+    <li><a href="{% url "freshTomatoes" template_name='movies' %}">Movie freshTomatoes</a></li>
+
+</ol>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{% load staticfiles %}
+
+<!-- Head -->
+<html>
+<head>
+
+<link rel="stylesheet" href="{% static "lumx/dist/lumx.css" %}">
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+
+</head>
+<body ng-app="freshTomatoes.app.movieReview">
+<div class="container">
+<div class="content ng-cloak" ng-controller="{% block ng_controller %}AppController{% endblock %}">{% block content %}
+    <div class="panel" ng-repeat="movie in movies">
+        <div class="panel-heading clearfix">{% block post_header %}
+            {% verbatim %}
+            <h3 class="panel-title">{{ post.title }} <small>{{ movie.author.username }}</small></h3>
+            {% endverbatim %}
+        {% endblock %}</div>
+        {% verbatim %}
+        <p class="well">{{ movie.description }}</p>
+        <span class="photo">
+            <img class="img-thumbnail" ng-src="{{ movie.image_url }}">
+        </span>
+        {% endverbatim %}
+    </div>
+{% endblock %}</div>
+</div>
+{% block js %}
+<script src="{% static "jquery/dist/jquery.js" %}"></script>
+<script src="{% static "velocity/velocity.js" %}"></script>
+<script src="{% static "moment/min/moment-with-locales.js" %}"></script>
+<script src="{% static "underscore/underscore.js" %}"></script>
+<script src="{% static "angular/angular.js" %}"></script>
+<script src="{% static "angular-resource/angular-resource.js" %}"></script>
+<script src="{% static "lumx/dist/lumx.js" %}"></script>
+<script src="{% static "js/script.js" %}"></script>
+{% endblock %}
+</body>
+</html>

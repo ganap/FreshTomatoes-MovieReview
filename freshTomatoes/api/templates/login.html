@@ -1,0 +1,65 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static "css/login.css" %}">
+
+{% verbatim %}
+<md-dialog>
+    <!-- Form Container-->
+    <div class="form-container">
+      <style type="text/css">
+
+        .style-1 .form-group input:valid,
+        .style-1 .form-group input:focus {
+          color: #33b5e5;
+        }
+
+        .style-1 .form-group input:valid ~ .line,
+        .style-1 .form-group input:focus ~ .line {
+          background: #33b5e5;
+        }
+
+        .style-1 .button {
+          background: #33b5e5;
+        }
+
+      </style>
+      <div style="width: 360px;" class="form style-1">
+        <header class="header">
+          <h1 class="active">Sign In</h1>
+          <h1>Sign Up</h1>
+        </header>
+        <form class="active" ng-controller="authController" ng-init="authState.user='{{user.username}}'">
+          <div class="form-group">
+            <input type="text" id="username" placeholder="Username" required="required"/>
+            <label for="username">Username</label>
+            <div class="line"></div>
+          </div>
+          <div class="form-group">
+            <input type="password" id="password" placeholder="Password" required="required"/>
+            <label for="password">Password</label>
+            <div class="line"></div>
+          </div>
+          <button class="button" ng-click="login()">Login</button>
+        </form>
+        <form>
+          <div class="form-group">
+            <input ng-model="username" required name="username" type="text" placeholder="Username"/>
+            <label for="username">Username</label>
+            <div class="line"></div>
+
+            <input ng-model="password" required name="password" type="password" placeholder="password"/>
+            <label for="password">Password</label>
+            <div class="line"></div>
+          </div>
+          <button class="button" type = submit value="login">Login</button>
+        </form>
+        <footer class="footer"><a href="#">Forgot your password?</a></footer>
+      </div>
+    </div>
+</md-dialog>
+{% endverbatim %}
+
+{% block js %}
+    <!-- Angular Material Dependencies -->
+    <script src="{% static "js/login.js" %}"></script>
+{% endblock %}

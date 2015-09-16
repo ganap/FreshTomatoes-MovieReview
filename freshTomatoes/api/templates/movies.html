@@ -1,0 +1,240 @@
+{% load staticfiles %}
+
+<html lang="en" ng-app="freshTomatoes.app.movieReview">
+  <head>
+    <link rel="stylesheet" type="text/css" href="{% static "angular-material/angular-material.min.css"  %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/app.css" %}">
+  </head>
+
+  <body layout="row" >
+  {% verbatim %}
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+      <md-toolbar class="md-tall md-hue-2">
+        <span flex></span>
+        <div layout="column" class="md-toolbar-tools-bottom inset">
+
+          <user-avatar></user-avatar>
+          <span></span>
+          <div>Firstname Lastname</div>
+          <div>email@domainname.com</div>
+        </div>
+      </md-toolbar>
+      <md-list>
+      <md-item>
+        <a>
+          <md-item-content md-ink-ripple layout="row" layout-align="start center">
+            <div class="inset">
+              <ng-md-icon icon="settings"></ng-md-icon>
+            </div>
+            <div class="inset">Settings
+            </div>
+          </md-item-content>
+        </a>
+      </md-item>
+    </md-list>
+     <md-item>
+        <a>
+          <md-item-content md-ink-ripple layout="row" layout-align="start center">
+            <div class="inset">
+              <ng-md-icon icon="share"></ng-md-icon>
+            </div>
+            <div class="inset">Share
+            </div>
+          </md-item-content>
+        </a>
+      </md-item>
+    </md-sidenav>
+    <div layout="column" class="relative" layout-fill role="main" ng-controller="AppController">
+      <md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="showAdd($event)">
+        <ng-md-icon icon="add"></ng-md-icon>
+      </md-button>
+      <md-toolbar ng-show="!showSearch">
+        <div class="md-toolbar-tools">
+          <md-button ng-click="toggleSidenav('left')" hide-gt-md aria-label="Menu">
+            <ng-md-icon icon="menu"></ng-md-icon>
+          </md-button>
+          <h3>
+            Movie Reviews by Fresh Tomatoes
+          </h3>
+          <span flex></span>
+          <md-button aria-label="Search" ng-click="showSearch = !showSearch">
+            <ng-md-icon icon="search"></ng-md-icon>
+          </md-button>
+          <md-button aria-label="Open Settings" ng-click="showListBottomSheet($event)">
+            <ng-md-icon icon="more_vert"></ng-md-icon>
+          </md-button>
+        </div>
+        <md-tabs md-stretch-tabs class="md-primary" md-selected="data.selectedIndex">
+          <md-tab id="tab1" aria-controls="tab1-content">
+            Popularity
+          </md-tab>
+          <md-tab id="tab2" aria-controls="tab2-content">
+            Alphabetical
+          </md-tab>
+        </md-tabs>
+      </md-toolbar>
+      <md-toolbar class="md-hue-1" ng-show="showSearch">
+        <div class="md-toolbar-tools">
+          <md-button ng-click="showSearch = !showSearch" aria-label="Back">
+            <ng-md-icon icon="arrow_back"></ng-md-icon>
+          </md-button>
+          <h3 flex="10">
+            Back
+          </h3>
+          <md-input-container md-theme="input" flex>
+            <label>&nbsp;</label>
+            <input ng-model="search.name" placeholder="Search movies">
+          </md-input-container>
+          <md-button aria-label="Search" ng-click="showSearch = !showSearch">
+            <ng-md-icon icon="search"></ng-md-icon>
+          </md-button>
+          <md-button aria-label="login" ng-click="login()">
+            <ng-md-icon icon="more_vert"></ng-md-icon>
+          </md-button>
+        </div>
+       
+      </md-toolbar>
+      <br>
+      <div ng-controller="authController" layout=row" flex>
+          <md-toolbar class="md-hue-3">
+            <div class="md-toolbar-tools" layout="row" flex>
+
+                <div layout="row" ng-show="authState.user">
+                    <div flex>
+                        <h3>{{authState.user}}</h3>
+                    </div>
+                    <div flex>
+                        <md-button class="md-raised md-primary" ng-click="logout()">Logout</md-button>
+                    </div>
+                </div>
+                <div layout="row" ng-hide="authState.user">
+                    <div flex>
+                      <md-input-container>
+                      <label>Username</label>
+                      <input ng-model="username">
+                      </md-input-container>
+                    </div>
+                    <div flex>
+                      <md-input-container>
+                        <label>Password</label>
+                        <input ng-model="password">
+                      </md-input-container>
+                    </div>
+                    <div flex="10">
+                        <md-button class="md-raised md-primary" ng-click="login()">Login</md-button>
+                    </div>
+                 </div>
+             </div>
+        </md-toolbar>
+        </md-content>
+      </div>
+
+      <md-content flex md-scroll-y>
+        <ui-view layout="column" layout-fill layout-padding>
+          <div class="inset" hide-sm></div>
+            <ng-switch on="data.selectedIndex" class="tabpanel-container">
+              <div role="tabpanel"
+                   id="tab1-content"
+                   aria-labelledby="tab1"
+                   ng-switch-when="0"
+                   md-swipe-left="next()"
+                   md-swipe-right="previous()"
+                   layout="row" layout-align="center center">
+                  <md-card flex-gt-sm="90" flex-gt-md="80">
+
+                    <md-card-content>
+                      <md-list>
+                        <md-item ng-repeat="movie in movies | filter:search | orderBy:'-rating'">
+                          <md-item-content>
+                                <div class="imgwrap">
+                                    <img ng-src="{{ movie.image_url}}" height=135, width=90 />
+                                </div>
+                                <div class="md-tile-content">
+                                     <h3><strong><a href ng-click="showDesc($event, movie.description)">{{movie.name}} </a></strong></h3>
+                                    <div ng-show="movie.rating <= 3.5"><img ng-src="/static/images/negative.png" width="25" height="26"/></div>
+                                    <div ng-show="movie.rating > 3.5"><img ng-src="/static/images/positive.png" width="25" height="26"/></div>
+                                    <h4><strong>Rating:</strong>{{ movie.rating }}/5.0</h4>
+                                </div>
+                                   <ng-md-icon icon="edit" ng-click="showEdit($event, movie)"></ng-md-icon>
+                                   <ng-md-icon icon="delete" ng-controller="DeleteController" ng-click="delete(movie)" ng-confirm-click="Are you sure you want to delete?"></ng-md-icon>
+                          </md-item-content>
+                          <md-divider md-inset hide-sm ng-if="!$last"></md-divider>
+                          <md-divider hide-gt-sm ng-if="!$last"></md-divider>
+                        </md-item>
+                        <md-divider></md-divider>
+                        <md-item layout class="inset">
+                            <md-button layout layout-align="start center" flex class="md-primary">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg> More
+                            </md-button>
+                        </md-item>
+                      </md-list>
+                    </md-card-content>
+                  </md-card>
+              </div>
+              <div role="tabpanel"
+                   id="tab2-content"
+                   aria-labelledby="tab2"
+                   ng-switch-when="1"
+                   md-swipe-left="next()"
+                   md-swipe-right="previous()" 
+                   layout="row" layout-align="center center">
+                  <md-card flex-gt-sm="90" flex-gt-md="80">
+                    <md-card-content>
+                      <md-list>
+                         <md-item ng-repeat="movie in movies | filter:search | orderBy:'name'">
+                          <md-item-content>
+                                <div class="imgwrap">
+                                    <img ng-src="{{ movie.image_url}}" height=135, width=90 />
+                                </div>
+                                <div class="md-tile-content">
+                                    <h3><strong>{{movie.name}}</strong></h3>
+                                    <div ng-show="movie.rating <= 3.5"><img ng-src="/static/images/negative.png" width="25" height="26"/></div>
+                                    <div ng-show="movie.rating > 3.5"><img ng-src="/static/images/positive.png" width="25" height="26"/></div>
+                                    <h4><strong>Rating:</strong>{{ movie.rating }}/5.0</h4>
+                                </div>
+                          </md-item-content>
+                         <md-divider md-inset hide-sm ng-if="!$last"></md-divider>
+                          <md-divider hide-gt-sm ng-if="!$last"></md-divider>
+                        </md-item>
+                        <md-divider></md-divider>
+                        <md-item layout class="inset">
+                            <md-button layout layout-align="start center" flex class="md-primary">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg> More
+                            </md-button>
+                        </md-item>
+                        <md-divider></md-divider>
+
+                        <md-item layout class="inset">
+                        </md-item>
+
+                      </md-list>
+                    </md-card-content>
+                  </md-card>
+              </div>
+
+          </ng-switch>
+          
+        </ui-view>
+
+      </md-content>
+    </div>
+{% endverbatim %}
+
+  {% block js %}
+    <!-- Angular Material Dependencies -->
+    <script src="{% static "angular/angular.min.js" %}"></script>
+    <script src="{% static "angular-resource/angular-resource.min.js" %}"></script>
+    <script src="{% static "angular-animate/angular-animate.min.js" %}"></script>
+    <script src="{% static "angular-aria/angular-aria.min.js" %}"></script>
+    <script src="{% static "angular-material/angular-material.min.js" %}"></script>
+    <script src="{% static "angular-material-icons/angular-material-icons.min.js" %}"></script>
+    <script src="{% static "js/app.js" %}"></script>
+
+<script>
+
+</script>
+{% endblock %}
+
+
+  </body>
+</html>
